@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DukaanOS — Your Shop, Understood.</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("dk-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark")}catch(e){}</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark">D</div><div><strong>DukaanOS</strong><span>Shop operating system</span></div></div>
+    <nav>
+      <button class="nav-item active" data-page="dashboard"><span>⌂</span> Dashboard</button>
+      <button class="nav-item" data-page="sales"><span>₹</span> Sales</button>
+      <button class="nav-item" data-page="inventory"><span>▦</span> Inventory</button>
+      <button class="nav-item" data-page="udhaar"><span>◷</span> Udhaar</button>
+      <button class="nav-item" data-page="purchases"><span>🛒</span> Purchases</button>
+      <button class="nav-item" data-page="insights"><span>✦</span> Insights</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="nav-item" data-page="settings"><span>⚙</span> Settings</button>
+      <div class="shop-mini"><div class="shop-avatar" id="shopAvatar">RK</div><div><strong id="shopMiniName">Rajesh Kirana</strong><span id="shopMiniCity">Ghaziabad, UP</span></div></div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <header class="mobile-header">
+    <div class="mobile-brand"><div class="brand-mark">D</div><strong>DukaanOS</strong></div>
+    <div class="head-actions"><button class="icon-btn theme-toggle" aria-label="Toggle theme"><i class="theme-icon"></i></button><button class="icon-btn" id="mobileMenuBtn" aria-label="Menu">☰</button></div>
+  </header>
+
+  <main class="main">
+    <button class="icon-btn theme-toggle desktop-theme" aria-label="Toggle light or dark mode" title="Light / dark mode"><i class="theme-icon"></i></button>
+
+    <section class="page active" id="dashboard">
+      <div class="topbar">
+        <div><p class="eyebrow" id="greeting">GOOD MORNING</p><h1>Your shop, <span>understood.</span></h1><p class="subtitle" id="todayDate"></p></div>
+        <button class="primary-btn" data-modal="saleModal">+ Record sale</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-top"><span>Sales today</span><span class="stat-icon">₹</span></div><strong id="todaySales">₹0</strong><small id="salesNote">0 sales</small></div>
+        <div class="stat-card"><div class="stat-top"><span>Expenses today</span><span class="stat-icon">−</span></div><strong id="todayExpenses">₹0</strong><small>Today's spending</small></div>
+        <div class="stat-card"><div class="stat-top"><span>Pending udhaar</span><span class="stat-icon">◷</span></div><strong id="pendingTotal">₹0</strong><small class="warning-text" id="pendingNote"></small></div>
+        <div class="stat-card"><div class="stat-top"><span>Low stock</span><span class="stat-icon">▦</span></div><strong id="lowStockCount">0</strong><small class="warning-text">items running low</small></div>
+      </div>
+      <div class="dashboard-grid">
+        <div class="panel"><div class="panel-header"><div><span class="panel-label">DUKAAN INTELLIGENCE</span><h2>Smart insights</h2></div><span class="sparkle">✦</span></div><div id="smartInsights"></div></div>
+        <div class="panel"><div class="panel-header"><div><span class="panel-label">SHORTCUTS</span><h2>Quick actions</h2></div></div>
+          <div class="quick-actions">
+            <button class="quick-action" data-modal="saleModal"><span>₹</span><strong>Sale</strong><small>Record a sale</small></button>
+            <button class="quick-action" data-modal="expenseModal"><span>−</span><strong>Expense</strong><small>Add spending</small></button>
+            <button class="quick-action" data-modal="productModal"><span>+</span><strong>Product</strong><small>Add inventory</small></button>
+            <button class="quick-action" data-modal="paymentModal"><span>◷</span><strong>Udhaar</strong><small>Add pending</small></button>
+          </div></div>
+      </div>
+      <div class="dashboard-grid bottom-grid">
+        <div class="panel"><div class="panel-header"><div><span class="panel-label">INVENTORY</span><h2>Needs attention</h2></div><button class="text-btn" data-page-link="inventory">View all →</button></div><div id="inventoryPreview"></div></div>
+        <div class="panel"><div class="panel-header"><div><span class="panel-label">PAYMENTS</span><h2>Pending udhaar</h2></div><button class="text-btn" data-page-link="udhaar">View all →</button></div><div id="paymentPreview"></div></div>
+      </div>
+    </section>
+
+    <section class="page" id="sales">
+      <div class="page-heading"><div><span class="eyebrow">SALES</span><h1>Sales overview</h1><p>Keep track of everything your shop sells.</p></div><button class="primary-btn" data-modal="saleModal">+ Record sale</button></div>
+      <div class="stats-grid small-stats">
+        <div class="stat-card"><span>Today</span><strong id="salesPageToday">₹0</strong></div>
+        <div class="stat-card"><span>Last 7 days</span><strong id="salesWeek">₹0</strong></div>
+        <div class="stat-card"><span>Profit today (sales − expenses)</span><strong id="profitToday">₹0</strong></div>
+      </div>
+      <div class="dashboard-grid bottom-grid">
+        <div class="panel"><div class="panel-header"><h2>Recent sales</h2></div><div id="salesList" class="table-list"></div></div>
+        <div class="panel"><div class="panel-header"><h2>Expenses</h2><button class="text-btn" data-modal="expenseModal">+ Add</button></div><div id="expenseList" class="table-list"></div></div>
+      </div>
+    </section>
+
+    <section class="page" id="inventory">
+      <div class="page-heading"><div><span class="eyebrow">INVENTORY</span><h1>Know what you have.</h1><p>DukaanOS watches your stock so you don't have to.</p></div><button class="primary-btn" data-modal="productModal">+ Add product</button></div>
+      <div class="inventory-summary">
+        <div class="summary-card"><span>Total products</span><strong id="totalProducts">0</strong></div>
+        <div class="summary-card warning"><span>Low stock</span><strong id="inventoryLow">0</strong></div>
+        <div class="summary-card danger"><span>Out of stock</span><strong id="inventoryOut">0</strong></div>
+      </div>
+      <div class="panel"><div class="panel-header"><h2>Products</h2><input class="search-input" id="inventorySearch" placeholder="Search products..."></div><div id="inventoryList"></div></div>
+    </section>
+
+    <section class="page" id="udhaar">
+      <div class="page-heading"><div><span class="eyebrow">UDHAAR</span><h1>Pending payments.</h1><p>Keep track of who owes what without the notebook.</p></div><button class="primary-btn" data-modal="paymentModal">+ Add udhaar</button></div>
+      <div class="stats-grid small-stats"><div class="stat-card"><span>Total pending</span><strong id="udhaarTotal">₹0</strong></div><div class="stat-card"><span>People</span><strong id="udhaarPeople">0</strong></div></div>
+      <div class="panel"><div class="panel-header"><h2>Customers</h2></div><div id="udhaarList"></div></div>
+    </section>
+
+    <section class="page" id="purchases">
+      <div class="page-heading"><div><span class="eyebrow">PURCHASES</span><h1>What should you buy?</h1><p>Your purchase list, powered by your shop's patterns.</p></div><button class="primary-btn" id="restockAll">Mark all received</button></div>
+      <div class="panel"><div class="panel-header"><div><span class="panel-label">SMART PURCHASE LIST</span><h2>Recommended for your next order</h2></div></div><div id="purchaseList"></div></div>
+    </section>
+
+    <section class="page" id="insights">
+      <div class="page-heading"><div><span class="eyebrow">DUKAAN INTELLIGENCE</span><h1>Your business, explained.</h1><p>Simple answers from your shop's data.</p></div></div>
+      <div class="insight-cards" id="insightCards"></div>
+      <div class="panel ask-panel"><div class="ask-icon">✦</div><div style="flex:1"><span class="panel-label">ASK DUKAAN</span><h2>Ask anything about your shop.</h2><p class="subtitle">Try: “What should I buy tomorrow?”, “How are sales?”, “Who owes me?”, “Profit?”</p>
+        <div class="ask-box"><input id="askInput" placeholder="Ask Dukaan..."><button id="askBtn">Ask</button></div><div id="askResponse"></div></div></div>
+    </section>
+
+    <section class="page" id="settings">
+      <div class="page-heading"><div><span class="eyebrow">SETTINGS</span><h1>Your shop</h1><p>Manage your DukaanOS workspace.</p></div></div>
+      <div class="panel settings-panel">
+        <label>Shop name<input id="shopName"></label><label>Owner name<input id="ownerName"></label><label>City<input id="shopCity"></label>
+        <label>Appearance<div class="segmented" id="themeSeg"><button type="button" data-t="dark">Dark</button><button type="button" data-t="light">Light</button></div></label>
+        <div class="btn-row"><button class="primary-btn" id="saveSettings">Save changes</button><button class="ghost-btn" id="resetData">Reset demo data</button></div>
+      </div>
+    </section>
+
+    <footer class="nexora-footer">
+      <div class="nexora-branding">
+        <a id="nexoraLogoLink" target="_blank" rel="noopener"><img id="nexoraLogo" class="nexora-logo" alt="Nexora Corporation"></a>
+        <div class="nexora-heading"><h2>NEXORA</h2><span>CONNECT <b>•</b> CREATE <b>•</b> EXPERIENCE</span></div>
+      </div>
+      <div class="nexora-divider"></div>
+      <p class="copyright">© <span id="copyrightYear"></span> Nexora Corporation</p>
+    </footer>
+  </main>
+</div>
+
+<div class="modal" id="saleModal"><div class="modal-box"><button class="close-modal" aria-label="Close">×</button><span class="eyebrow">NEW SALE</span><h2>Record a sale</h2>
+  <form id="saleForm">
+    <label>Product<input id="saleProduct" list="productList" required placeholder="e.g. Parle-G" autocomplete="off"></label><datalist id="productList"></datalist>
+    <div class="two"><label>Quantity<input id="saleQty" type="number" min="1" value="1" required></label><label>Amount (₹)<input id="saleAmount" type="number" min="0" step="any" required></label></div>
+    <label>Payment<select id="salePayment"><option>Cash</option><option>UPI</option><option>Card</option></select></label>
+    <button class="primary-btn full" type="submit">Record sale</button></form></div></div>
+<div class="modal" id="expenseModal"><div class="modal-box"><button class="close-modal" aria-label="Close">×</button><span class="eyebrow">NEW EXPENSE</span><h2>Add expense</h2>
+  <form id="expenseForm"><label>Description<input id="expenseName" required placeholder="e.g. Stock purchase"></label><label>Amount (₹)<input id="expenseAmount" type="number" min="0" step="any" required></label><button class="primary-btn full" type="submit">Add expense</button></form></div></div>
+<div class="modal" id="productModal"><div class="modal-box"><button class="close-modal" aria-label="Close">×</button><span class="eyebrow">INVENTORY</span><h2>Add product</h2>
+  <form id="productForm"><label>Product name<input id="productName" required placeholder="e.g. Milk 500ml"></label>
+    <div class="two"><label>Selling price (₹)<input id="productPrice" type="number" min="0" step="any" required></label><label>Current stock<input id="productStock" type="number" min="0" required></label></div>
+    <div class="two"><label>Low-stock level<input id="productLow" type="number" min="1" value="10" required></label><label>Avg. daily sales<input id="productDaily" type="number" min="0" value="2" required></label></div>
+    <button class="primary-btn full" type="submit">Add product</button></form></div></div>
+<div class="modal" id="paymentModal"><div class="modal-box"><button class="close-modal" aria-label="Close">×</button><span class="eyebrow">UDHAAR</span><h2>Add pending payment</h2>
+  <form id="paymentForm"><label>Customer<input id="customerName" required placeholder="e.g. Ramesh Kumar"></label><label>Amount (₹)<input id="customerAmount" type="number" min="1" required></label>
+    <label>Due in<select id="customerDue"><option>Today</option><option>3 days</option><option>7 days</option><option>30 days</option></select></label><button class="primary-btn full" type="submit">Add udhaar</button></form></div></div>
+<div class="modal" id="receiveModal"><div class="modal-box"><button class="close-modal" aria-label="Close">×</button><span class="eyebrow">UDHAAR</span><h2 id="receiveTitle">Receive payment</h2>
+  <form id="receiveForm"><label>Amount received (₹)<input id="receiveAmount" type="number" min="1" step="any" required></label><button class="primary-btn full" type="submit">Save payment</button></form></div></div>
+
+<!-- FLOATING CALCULATOR -->
+<div class="calc-wrap">
+  <div class="calc glass" id="calc" aria-hidden="true" role="dialog" aria-label="Calculator">
+    <div class="calc-tabs"><button class="on" data-mode="calc">Calculator</button><button data-mode="change">Change</button></div>
+    <div id="calcMain">
+      <div class="calc-display"><div class="calc-expr" id="calcExpr">&nbsp;</div><div class="calc-result" id="calcResult">0</div></div>
+      <div class="gst-row"><select id="gstRate" aria-label="GST rate"><option value="5">GST 5%</option><option value="12">GST 12%</option><option value="18" selected>GST 18%</option><option value="28">GST 28%</option></select><button data-k="gst+">+ GST</button><button data-k="gst-">− GST</button></div>
+      <div class="keys">
+        <button class="fn" data-k="AC">AC</button><button class="fn" data-k="back">⌫</button><button class="fn" data-k="%">%</button><button class="op" data-k="/">÷</button>
+        <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button class="op" data-k="*">×</button>
+        <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button class="op" data-k="-">−</button>
+        <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button class="op" data-k="+">+</button>
+        <button data-k="0" class="zero">0</button><button data-k=".">.</button><button class="eq" data-k="=">=</button>
+      </div>
+      <button class="use-btn" id="calcUse">Use as sale amount</button>
+      <div class="calc-hist" id="calcHist"></div>
+    </div>
+    <div id="calcChange" class="hidden">
+      <label>Bill amount (₹)<input id="chBill" type="number" step="any" inputmode="decimal"></label>
+      <label>Customer paid (₹)<input id="chPaid" type="number" step="any" inputmode="decimal"></label>
+      <div class="change-out" id="chOut">Enter amounts</div>
+      <div class="notes" id="chNotes"></div>
+    </div>
+  </div>
+  <button class="calc-fab" id="calcFab" aria-label="Open calculator" aria-expanded="false"><span class="fab-calc">▦</span><span class="fab-x">×</span></button>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<script src="script.js"></script>
+</body>
+</html>
