@@ -18,6 +18,8 @@
       <button class="nav-item" data-page="udhaar"><span>◷</span> Udhaar</button>
       <button class="nav-item" data-page="purchases"><span>🛒</span> Purchases</button>
       <button class="nav-item" data-page="insights"><span>✦</span> Insights</button>
+      <button class="nav-item" data-page="monthly"><span>▤</span> Monthly</button>
+      <button class="nav-item" data-page="notes"><span>✎</span> Notepad</button>
     </nav>
     <div class="sidebar-bottom">
       <button class="nav-item" data-page="settings"><span>⚙</span> Settings</button>
@@ -102,7 +104,41 @@
         <div class="ask-box"><input id="askInput" placeholder="Ask Dukaan..."><button id="askBtn">Ask</button></div><div id="askResponse"></div></div></div>
     </section>
 
-    <section class="page" id="settings">
+    <section class="page" id="monthly">
+<div class="page-heading"><div><span class="eyebrow">MONTHLY TRACKER</span><h1>Month by month.</h1><p>Revenue, expenses and profit, built from the sales and expenses you record.</p></div>
+<div class="month-nav"><button class="icon-btn" data-month="-1" aria-label="Previous month">‹</button><strong id="monthLabel"></strong><button class="icon-btn" data-month="1" aria-label="Next month">›</button></div></div>
+<div class="stats-grid small-stats">
+<div class="stat-card"><span>Revenue</span><strong id="mRevenue">₹0</strong><small id="mRevenueNote"></small></div>
+<div class="stat-card"><span>Expenses</span><strong id="mExpenses">₹0</strong><small id="mExpensesNote"></small></div>
+<div class="stat-card"><span>Profit (revenue − expenses)</span><strong id="mProfit">₹0</strong><small id="mProfitNote"></small></div>
+</div>
+<div class="panel"><div class="panel-header"><div><span class="panel-label">LAST 6 MONTHS</span><h2>Revenue vs expenses</h2></div></div>
+<div class="chart-scroll" id="trendChart"></div>
+<div class="legend"><span><i style="background:var(--accent)"></i>Revenue</span><span><i style="background:var(--yellow)"></i>Expenses</span></div>
+<div class="table-scroll" id="trendTable"></div></div>
+<div class="stats-grid small-stats" style="margin-top:18px">
+<div class="stat-card"><span>Best day</span><strong id="mBest">—</strong><small id="mBestNote"></small></div>
+<div class="stat-card"><span>Slowest day</span><strong id="mWorst">—</strong><small id="mWorstNote"></small></div>
+<div class="stat-card"><span>Sales recorded</span><strong id="mCount">0</strong><small id="mCountNote"></small></div>
+</div>
+<div class="dashboard-grid bottom-grid">
+<div class="panel"><div class="panel-header"><div><span class="panel-label">THIS MONTH</span><h2>Daily revenue</h2></div></div>
+<div class="chart-scroll" id="dailyChart"></div>
+<div class="legend"><span><i style="background:var(--green)"></i>Best day</span><span><i style="background:var(--red)"></i>Slowest day</span><span><i style="background:var(--accent)"></i>Other days</span></div>
+<p class="fine">Best and slowest are picked from days that have at least one sale.</p></div>
+<div class="panel"><div class="panel-header"><div><span class="panel-label">THIS MONTH</span><h2>Top-selling products</h2></div></div>
+<div id="topProducts"></div>
+<p class="fine">Ranked by revenue. Generic “Groceries” entries count towards revenue but aren’t ranked as a product.</p></div>
+</div>
+</section>
+
+<section class="page" id="notes">
+<div class="page-heading"><div><span class="eyebrow">NOTEPAD</span><h1>Jot it down.</h1><p>Notes, reminders and checklists. Saved on this device.</p></div><button class="primary-btn" data-note="new">+ New note</button></div>
+<div class="panel notes-bar"><input class="search-input" id="notesSearch" placeholder="Search notes..." aria-label="Search notes"></div>
+<div id="notesList"></div>
+</section>
+
+<section class="page" id="settings">
       <div class="page-heading"><div><span class="eyebrow">SETTINGS</span><h1>Your shop</h1><p>Manage your DukaanOS workspace.</p></div></div>
       <div class="panel settings-panel">
         <label>Shop name<input id="shopName"></label><label>Owner name<input id="ownerName"></label><label>City<input id="shopCity"></label>
@@ -140,6 +176,16 @@
     <label>Due in<select id="customerDue"><option>Today</option><option>3 days</option><option>7 days</option><option>30 days</option></select></label><button class="primary-btn full" type="submit">Add udhaar</button></form></div></div>
 <div class="modal" id="receiveModal"><div class="modal-box"><button class="close-modal" aria-label="Close">×</button><span class="eyebrow">UDHAAR</span><h2 id="receiveTitle">Receive payment</h2>
   <form id="receiveForm"><label>Amount received (₹)<input id="receiveAmount" type="number" min="1" step="any" required></label><button class="primary-btn full" type="submit">Save payment</button></form></div></div>
+
+<div class="modal" id="noteModal"><div class="modal-box"><button class="close-modal" aria-label="Close">×</button><span class="eyebrow" id="noteEyebrow">NEW NOTE</span><h2 id="noteHeading">Add note</h2>
+<form id="noteForm">
+<label>Title<input id="noteTitle" placeholder="e.g. Things to buy" maxlength="80" autocomplete="off"></label>
+<div class="segmented mb" id="noteType"><button type="button" data-nt="text" class="on">Note</button><button type="button" data-nt="list">Checklist</button></div>
+<div id="noteTextWrap"><label>Note<textarea id="noteBody" rows="6" placeholder="Write something..."></textarea></label></div>
+<div id="noteListWrap" class="hidden"><div id="noteItems"></div><div class="item-add"><input class="search-input" id="noteNewItem" placeholder="Add an item, press Enter" maxlength="120" autocomplete="off"><button type="button" class="mini good" id="noteAddItem">Add</button></div></div>
+<label class="check"><input type="checkbox" id="notePinned"> Pin to top</label>
+<div class="btn-row" style="margin-top:16px"><button class="primary-btn" type="submit">Save note</button><button type="button" class="ghost-btn hidden" id="noteDelete">Delete</button></div>
+</form></div></div>
 
 <!-- FLOATING CALCULATOR -->
 <div class="calc-wrap">
